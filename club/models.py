@@ -91,7 +91,7 @@ class Familia(models.Model):
     )
 
     class Meta:
-        ordering = ['nombre_familia', 'miembro__nombre']
+        ordering = ['nombre_familia']
         verbose_name = 'Familia'
         verbose_name_plural = 'Familias'
 
