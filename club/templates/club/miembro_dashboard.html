@@ -76,7 +76,7 @@
 <div class="row ">
     <div class="col-12 col-xl-3 mb-4">
         <div class="card">
-            <h5 class="card-header bg-primary text-white">Aventureros por clase</h5>
+            <h5 class="card-header bg-primary text-white">Miembros por clase</h5>
             <div class="card-body">
                 <canvas id="myChart"></canvas>
             </div>
@@ -108,7 +108,7 @@
                                         <td>
                                             <table class="table table-borderless mb-0">
                                                 <tbody>
-                                                    {% for miembro in familia.miembro.all %}
+                                                    {% for miembro in familia.miembro_set.all %}
                                                     <tr>
                                                         <td>
                                                             <a href="{{miembro.get_absolute_url}}" class="">

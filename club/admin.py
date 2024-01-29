@@ -12,6 +12,7 @@ class TipoMiembroAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(ClaseMiembro)
 class ClaseMiembroAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     model = ClaseMiembro
+    # list_display = ('descripcion', 'hexcolor', 'colored_name')
 
 
 @admin.register(Miembro)
@@ -25,6 +26,12 @@ class MiembroAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     #           'concepto', 'importe', 'notas']
 
 
+class MiembroInline(admin.StackedInline):
+    model = Miembro
+
+
 @admin.register(Familia)
 class FamiliaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    autocomplete_fields = ["miembro"]
+    model = Familia
+    # autocomplete_fields = ["miembro"]
+    inlines = [MiembroInline]

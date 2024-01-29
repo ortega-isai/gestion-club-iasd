@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from django.utils.html import format_html
 
 
 class TipoMiembro(models.Model):
@@ -18,6 +19,14 @@ class TipoMiembro(models.Model):
 
 class ClaseMiembro(models.Model):
     descripcion = models.CharField(max_length=100)
+    hexcolor = models.CharField(max_length=7, default="#ffffff")
+
+    @property
+    def colored_name(self):
+        return format_html(
+            '<span style="color: #{};">{}</span>',
+            self.hexcolor,
+        )
 
     class Meta:
         ordering = ['descripcion']
@@ -26,6 +35,22 @@ class ClaseMiembro(models.Model):
 
     def __str__(self):
         return self.descripcion
+
+
+class Familia(models.Model):
+    nombre_familia = models.CharField(max_length=200)
+
+    class Meta:
+        ordering = ['nombre_familia']
+        verbose_name = 'Familia'
+        verbose_name_plural = 'Familias'
+
+    def __str__(self):
+        return f'Familia {self.nombre_familia}'
+
+    # ABSOLUTE URL METHOD
+    def get_absolute_url(self):
+        return reverse('familia-detail', kwargs={'pk': self.id})
 
 
 class Miembro(models.Model):
@@ -43,6 +68,12 @@ class Miembro(models.Model):
     apellido_materno = models.CharField(max_length=100)
     fecha_nacimiento = models.DateField(null=True, blank=True)
     sexo = models.CharField(choices=SEXO_CHOICES, max_length=1)
+    familia = models.ForeignKey(
+        Familia,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL
+    )
 
     # Datos del club
     tipo_miembro = models.ForeignKey(
@@ -81,23 +112,3 @@ class Miembro(models.Model):
     @property
     def edad_por_anio(self):
         return datetime.now().date().year - self.fecha_nacimiento.year
-
-
-class Familia(models.Model):
-    nombre_familia = models.CharField(max_length=200)
-    miembro = models.ManyToManyField(
-        Miembro,
-        blank=True,
-    )
-
-    class Meta:
-        ordering = ['nombre_familia']
-        verbose_name = 'Familia'
-        verbose_name_plural = 'Familias'
-
-    def __str__(self):
-        return f'Familia {self.nombre_familia}'
-
-    # ABSOLUTE URL METHOD
-    def get_absolute_url(self):
-        return reverse('familia-detail', kwargs={'pk': self.id})
