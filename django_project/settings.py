@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     # Local
     "accounts",
     # "pages",
+    'club.apps.ClubConfig',
 ]
 
 MIDDLEWARE = [
