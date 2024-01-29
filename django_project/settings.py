@@ -63,9 +63,9 @@ INSTALLED_APPS = [
     "debug_toolbar",
     # Local
     "accounts",
-    # "pages",
     'club.apps.ClubConfig',
     'contabilidad.apps.ContabilidadConfig',
+    'dashboard.apps.DashboardConfig',
 ]
 
 MIDDLEWARE = [
