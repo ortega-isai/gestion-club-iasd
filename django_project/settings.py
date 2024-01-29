@@ -51,16 +51,31 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    "django.contrib.sites",
+    "whitenoise.runserver_nostatic",
+    # Third-party
+    'import_export',
+    "allauth",
+    "allauth.account",
+    "crispy_forms",
+    "crispy_bootstrap5",
+    "debug_toolbar",
+    # Local
+    "accounts",
+    # "pages",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
@@ -182,7 +197,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 INTERNAL_IPS = ["127.0.0.1"]
 
 # https://docs.djangoproject.com/en/dev/topics/auth/customizing/#substituting-a-custom-user-model
-# AUTH_USER_MODEL = "accounts.CustomUser"
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 # django-allauth config
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
