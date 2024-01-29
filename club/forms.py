@@ -33,6 +33,8 @@ class MiembroAddForm(forms.ModelForm):
                          Column('sexo', css_class='form-group col-md-4 mb-0'),
                          Column('fecha_nacimiento',
                                 css_class='form-group col-md-4 mb-0'),
+                         Column('familia',
+                                css_class='form-group col-md-4 mb-0'),
                      ),
                      ),
             Fieldset('Datos del club',
@@ -51,14 +53,7 @@ class MiembroAddForm(forms.ModelForm):
 class FamiliaAddForm(forms.ModelForm):
     class Meta:
         model = Familia
-        fields = ['nombre_familia', 'miembro']
-    widgets = {
-        'miembro': forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple),
-    }
-    miembro = forms.ModelMultipleChoiceField(
-        queryset=Miembro.objects.all(),
-        widget=forms.CheckboxSelectMultiple
-    )
+        fields = ['nombre_familia']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -66,6 +61,5 @@ class FamiliaAddForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Field('nombre_familia'),
-            Field('miembro'),
         )
         self.helper.add_input(Submit('submit', 'Aceptar'))

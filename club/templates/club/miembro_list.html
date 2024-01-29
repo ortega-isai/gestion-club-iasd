@@ -20,8 +20,8 @@
 </div>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="">Home</a></li>
-        <li class="breadcrumb-item"><a href="">Miembros</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'miembros' %}">Miembros</a></li>
         <li class="breadcrumb-item active" aria-current="page">Lista de miembros</li>
     </ol>
 </nav>
@@ -49,9 +49,9 @@
                                     <a href="{{miembro.get_absolute_url}}" class="">
                                         {{miembro.nombre}} {{miembro.apellido_paterno}}
                                         {{miembro.apellido_materno}}
-                                    </a> - <small class="text-muted">{{miembro.get_tipo_miembro_display}}</small>
+                                    </a> - <small class="text-muted">{{miembro.tipo_miembro}}</small>
                                 </td>
-                                <td>{{miembro.get_clase_display}}</td>
+                                <td>{{miembro.clase}}</td>
                                 <td>{{miembro.edad}} año(s)</td>
                                 <td>{{miembro.fecha_nacimiento}}</td>
                                 <td>

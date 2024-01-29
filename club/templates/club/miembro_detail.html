@@ -19,8 +19,8 @@
 </div>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="">Home</a></li>
-        <li class="breadcrumb-item"><a href="">Miembros</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'miembros' %}">Miembros</a></li>
         <li class="breadcrumb-item active" aria-current="page">
             Miembro - #{{miembro.id}}
         </li>
@@ -29,18 +29,10 @@
 <div class="row">
     <div class="col-md-3 border-right">
         <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-            {% if miembro.tipo_miembro == "A" and miembro.sexo == "F"%}
-            <img src="{% static 'svg/undraw_doll_play_evbw.svg' %}" width="150px" alt="" />
-            {% elif miembro.tipo_miembro == "A" and miembro.sexo == "M"%}
-            <img src="{% static 'svg/undraw_toy_car_-7-umw.svg' %}" width="150px" alt="" />
-            {% elif miembro.tipo_miembro == "C" or miembro.tipo_miembro == "P"%}
             {% if miembro.sexo == "M"%}
             <img src="{% static 'svg/undraw_male_avatar_g98d.svg' %}" width="150px" alt="" />
-
             {% elif miembro.sexo == "F"%}
             <img src="{% static 'svg/undraw_female_avatar_efig.svg' %}" width="150px" alt="" />
-
-            {% endif %}
             {% endif %}
 
             <span class="font-weight-bold">
@@ -99,13 +91,11 @@
                         <label>Familia</label>
                     </div>
                     <div class="col-md-6">
-                        {% for familia in miembro.familia_set.all %}
                         <p>
-                            <a href="{{familia.get_absolute_url}}" class="">
-                                {{familia}}
+                            <a href="{{miembro.familia.get_absolute_url}}" class="">
+                                {{miembro.familia}}
                             </a>
                         </p>
-                        {% endfor %}
                     </div>
                 </div>
             </div>
