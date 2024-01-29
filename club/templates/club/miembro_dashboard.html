@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Miembros</h1>
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'miembros-list' %}"> Ver miembros</a>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'calendar-cumple' %}"> Cumpleaños</a>
+        </div>
+        <div class="btn-group me-2">
+            {% if perms.club.add_familia %}
+            <a href="{% url 'familia-new' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="text-success" data-feather="user-plus"></i> Nueva familia
+            </a>
+            {% endif %}
+            {% if perms.club.add_miembro %}
+            <a href="{% url 'miembro-new' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="text-success" data-feather="user-plus"></i> Nuevo miembro
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Miembros</li>
+    </ol>
+</nav>
+<div class="row my-4">
+    <div class="col mb-4 mb-lg-0">
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+            {% for key,value in tipo_miembro_count.items %}
+            <div class="col">
+                <div class="card shadow h-100">
+                    <h5 class="card-header bg-primary text-white">{{value.tipo_miembro}}</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{value.counts}}</h5>
+                        <p class="card-text">Total de {{value.tipo_miembro}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col">
+                <div class="card shadow h-100">
+                    <h5 class="card-header bg-primary text-white">Total de miembros</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{miembro_count}}</h5>
+                        <p class="card-text">Total de todos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="row row-cols-1 row-cols-md-3 row-cols-lg-6 g-4 my-4">
+    {% for key,value in clase_miembro_count.items %}
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{value.counts}}</h5>
+                <p class="card-text"><small class="text-muted">{{value.clase}}</small></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div> -->
+<div class="row ">
+    <div class="col-12 col-xl-3 mb-4">
+        <div class="card">
+            <h5 class="card-header bg-primary text-white">Aventureros por clase</h5>
+            <div class="card-body">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-xl-9 mb-4 mb-lg-0 ">
+        <div class="row">
+            <div class="col">
+                <div class="card h-100">
+                    <h5 class="card-header">Familias</h5>
+                    <div class="card-body">
+                        {% if familia_list %}
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Integrantes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for familia in familia_list %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{familia.get_absolute_url}}" class="">
+                                                {{familia}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <table class="table table-borderless mb-0">
+                                                <tbody>
+                                                    {% for miembro in familia.miembro.all %}
+                                                    <tr>
+                                                        <td>
+                                                            <a href="{{miembro.get_absolute_url}}" class="">
+                                                                {{miembro.nombre}} {{miembro.apellido_paterno}}
+                                                                {{miembro.apellido_materno}}
+                                                            </a> - <small
+                                                                class="text-muted">{{miembro.get_tipo_miembro_display}}</small>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block JavaScript %}
+<script>
+    // Call the dataTables jQuery plugin
+    $(document).ready(function () {
+        $('#dataTable').DataTable();
+    });
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{ claseAventureros|json_script:"data-club" }}
+
+<script>
+    const value = JSON.parse(document.getElementById('data-club').textContent);
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: value.labels,
+            datasets: [{
+                label: '# of aventureros',
+                data: value.data,
+                backgroundColor: value.colors,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    display: true,
+                },
+                title: {
+                    display: false,
+                    text: 'Aventureros por clase'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

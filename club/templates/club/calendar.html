@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<style>
+    #calendar {
+        width: 100%;
+        display: grid;
+    }
+
+    #calendar tr,
+    #calendar tbody {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        width: 100%;
+    }
+
+    #calendar .month {
+        text-align: center;
+        grid-column: 1 / -1;
+        font-size: 130%;
+        font-weight: bold;
+        padding: 10px 0;
+    }
+
+    #calendar td,
+    #calendar th {
+        padding: 5px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+    }
+
+    #calendar td {
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #calendar .date {
+        text-align: center;
+        margin-bottom: 5px;
+        padding: 4px;
+        background: #333;
+        color: #fff;
+        width: 30px;
+        border-radius: 50%;
+        flex: 0 0 auto;
+        align-self: flex-end;
+    }
+
+    #calendar .event {
+        flex: 0 0 auto;
+        font-size: 13px;
+        border-radius: 4px;
+        padding: 5px;
+        margin-bottom: 5px;
+        line-height: 14px;
+        background: #e4f2f2;
+        border: 1px solid #b5dbdc;
+        color: #009aaf;
+        text-decoration: none;
+    }
+
+    #calendar .event-desc {
+        color: #666;
+        margin: 3px 0 7px 0;
+        text-decoration: none;
+    }
+
+    /* ============================
+				Mobile Responsiveness
+   ============================*/
+
+
+    @media(max-width: 768px) {
+
+        #calendar .weekdays,
+        #calendar .other-month {
+            display: none;
+        }
+
+        #calendar li {
+            height: auto !important;
+            border: 1px solid #ededed;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: -1px;
+        }
+
+        #calendar,
+        #calendar tr,
+        #calendar tbody {
+            grid-template-columns: 1fr;
+        }
+
+        #calendar tr {
+            grid-column: 1 / 2;
+        }
+
+        #calendar .date {
+            align-self: flex-start;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Cumpleaños!</h1>
+
+</div>
+<div class="row my-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Lista de cumpleaños</h5>
+                <a class="btn btn-sm btn-secondary" href="{% url 'calendar-cumple' %}?{{ prev_month }}"> Mes anterior
+                </a>
+                <a class="btn btn-sm btn-secondary" href="{% url 'calendar-cumple' %}"> Mes actual</a>
+                <a class="btn btn-sm btn-secondary" href="{% url 'calendar-cumple' %}?{{ next_month }}"> Mes siguiente
+                </a>
+                <p class="card-text">
+                <table cellpadding="0" cellspacing="0" class="calendar" id="calendar">
+                    {{ calendar }}
+                </table>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

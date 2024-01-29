@@ -21,9 +21,9 @@
 
         <div class="btn-group me-2" role="group" aria-label="Basic example">
             <a class="btn btn-sm btn-outline-primary" href="{% url 'miembros' %}"> Ver miembros</a>
-            <a class="btn btn-sm btn-outline-primary" href=""> Cumpleaños</a>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'calendar-cumple' %}"> Cumpleaños</a>
             {% if perms.club.add_familia %}
-            <a href="" class="btn btn-sm btn-outline-secondary">
+            <a href="{% url 'familia-new' %}" class="btn btn-sm btn-outline-secondary">
                 <i class="text-success" data-feather="user-plus"></i> Nueva familia
             </a>
             {% endif %}
