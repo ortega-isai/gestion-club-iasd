@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "accounts",
     # "pages",
     'club.apps.ClubConfig',
+    'contabilidad.apps.ContabilidadConfig',
 ]
 
 MIDDLEWARE = [
