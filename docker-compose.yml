@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  web:
+    build: .
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - 8019:8000
+    environment:
+      - "DJANGO_ALLOWED_HOSTS=*"
+      - "DJANGO_DEBUG=False"
+      - "DJANGO_DATABASE_TEST=False"
+      - "DJANGO_SECRET_KEY="
+      - "DJANGO_CSRF_TRUSTED_ORIGINS=https://subdominio.dominio.com"
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+volumes:
+  postgres_data:
