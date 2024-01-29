@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Miembros</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            {% if perms.club.add_miembro %}
+            <a href="{% url 'miembro-new' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="text-success" data-feather="user-plus"></i> Nuevo miembro
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="">Home</a></li>
+        <li class="breadcrumb-item"><a href="">Miembros</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Lista de miembros</li>
+    </ol>
+</nav>
+<div class="row my-4">
+    <div class="col">
+        <div class="card">
+            <h5 class="card-header">Lista</h5>
+            <div class="card-body">
+                {% if miembro_list %}
+                <div class="table-responsive">
+                    <table class="table" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Clase</th>
+                                <th scope="col">Edad</th>
+                                <th scope="col">Cumpleaños</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for miembro in miembro_list %}
+                            <tr>
+                                <td>
+                                    <a href="{{miembro.get_absolute_url}}" class="">
+                                        {{miembro.nombre}} {{miembro.apellido_paterno}}
+                                        {{miembro.apellido_materno}}
+                                    </a> - <small class="text-muted">{{miembro.get_tipo_miembro_display}}</small>
+                                </td>
+                                <td>{{miembro.get_clase_display}}</td>
+                                <td>{{miembro.edad}} año(s)</td>
+                                <td>{{miembro.fecha_nacimiento}}</td>
+                                <td>
+                                    <a href="{{miembro.get_absolute_url_update}}" class="btn btn-sm btn-primary">
+                                        Editar
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+                <a class="btn btn-primary" href="{% url 'miembro-new' %}" role="button">
+                    Dar de alta nuevo aventurero
+                </a>
+            </div>
+            {{aves_count}}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block JavaScript %}
+<script>
+    // Call the dataTables jQuery plugin
+    $(document).ready(function () {
+        $('#dataTable').DataTable();
+    });
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{ claseAventureros|json_script:"data-club" }}
+
+<script>
+    const value = JSON.parse(document.getElementById('data-club').textContent);
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: value.labels,
+            datasets: [{
+                label: '# of aventureros',
+                data: value.data,
+                backgroundColor: value.colors,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    display: true,
+                },
+                title: {
+                    display: false,
+                    text: 'Aventureros por clase'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
