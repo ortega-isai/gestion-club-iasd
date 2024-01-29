@@ -37,6 +37,15 @@
 <div class="row my-4">
     <div class="col mb-4 mb-lg-0">
         <div class="row row-cols-1 row-cols-md-5 g-4">
+            <div class="col">
+                <div class="card shadow h-100">
+                    <h5 class="card-header bg-primary text-white">Total de miembros</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{miembro_count}}</h5>
+                        <p class="card-text">Total de todos</p>
+                    </div>
+                </div>
+            </div>
             {% for key,value in tipo_miembro_count.items %}
             <div class="col">
                 <div class="card shadow h-100">
@@ -48,19 +57,26 @@
                 </div>
             </div>
             {% endfor %}
-            <div class="col">
-                <div class="card shadow h-100">
-                    <h5 class="card-header bg-primary text-white">Total de miembros</h5>
-                    <div class="card-body">
-                        <h5 class="card-title">{{miembro_count}}</h5>
-                        <p class="card-text">Total de todos</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
-
+<div class="row my-4">
+    <div class="col mb-4 mb-lg-0">
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+            {% for key,value in clase_miembro_count.items %}
+            <div class="col">
+                <div class="card text-bg-light shadow h-100">
+                    <h5 class="card-header">{{value.clase}}</h5>
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: {{value.clase__hexcolor}};">{{value.counts}}</h5>
+                        <p class="card-text">Total de {{value.clase}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 <!-- <div class="row row-cols-1 row-cols-md-3 row-cols-lg-6 g-4 my-4">
     {% for key,value in clase_miembro_count.items %}
     <div class="col">

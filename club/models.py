@@ -19,7 +19,7 @@ class TipoMiembro(models.Model):
 
 class ClaseMiembro(models.Model):
     descripcion = models.CharField(max_length=100)
-    hexcolor = models.CharField(max_length=7, default="#ffffff")
+    hexcolor = models.CharField(max_length=7, default="#000000")
 
     @property
     def colored_name(self):
@@ -78,13 +78,9 @@ class Miembro(models.Model):
     # Datos del club
     tipo_miembro = models.ForeignKey(
         TipoMiembro,
-        blank=True,
-        null=True,
         on_delete=models.PROTECT)
     clase = models.ForeignKey(
         ClaseMiembro,
-        null=True,
-        blank=True,
         on_delete=models.PROTECT)
     miembro_iglesia = models.BooleanField(default=True,
                                           verbose_name='¿Es miembro de la IASD?')

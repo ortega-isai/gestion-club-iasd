@@ -28,12 +28,28 @@ class ClubDashboard(PermissionRequiredMixin, TemplateView):
         familias = models.Familia.objects.all()
         context['familia_list'] = familias
         miembros = models.Miembro.objects.all()
-        df_miembros = read_frame(miembros)
-
-        df_miembros_count = df_miembros.groupby(
-            ['tipo_miembro'])['tipo_miembro'].count().reset_index(name='counts').to_dict("index")
-        context['tipo_miembro_count'] = df_miembros_count
         context['miembro_count'] = models.Miembro.objects.count()
+
+        df_miembros = read_frame(miembros, fieldnames=['id', 'nombre', 'apellido_paterno', 'apellido_materno',
+                                                       'fecha_nacimiento', 'sexo', 'familia', 'tipo_miembro', 'clase',
+                                                       'clase__hexcolor', 'miembro_iglesia',])
+
+        # por tipo de miembro
+        df_tipo_miembro_count = df_miembros.groupby(
+            ['tipo_miembro'])['tipo_miembro'].count().reset_index(name='counts').to_dict("index")
+        context['tipo_miembro_count'] = df_tipo_miembro_count
+
+        # por clase de miembro
+        df_clase_miembro_count = df_miembros.groupby(['clase', 'clase__hexcolor'])[
+            'clase'].count().reset_index(name='counts').to_dict("index")
+        context['clase_miembro_count'] = df_clase_miembro_count
+
+        # por tipo - clase de miembro
+        df_general_miembro_count = df_miembros.groupby(['tipo_miembro', 'clase', 'clase__hexcolor', ])[
+            'clase'].count().reset_index(name='counts').to_dict("index")
+        context['general_miembro_count'] = df_general_miembro_count
+
+        print(df_general_miembro_count)
 
         return context
 
