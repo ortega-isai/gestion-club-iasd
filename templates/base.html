@@ -67,14 +67,14 @@
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'home' %}">
+              <a class="nav-link" aria-current="page" href="">
                 <span data-feather="home" class="align-text-bottom"></span>
                 Dashboard
               </a>
             </li>
             {% if perms.club %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'miembros' %}">
+              <a class="nav-link" href="">
                 <span data-feather="users" class="align-text-bottom"></span>
                 Miembros
               </a>
@@ -82,7 +82,7 @@
             {% endif %}
             {% if perms.contabilidad %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'contabilidad' %}">
+              <a class="nav-link" href="">
                 <span data-feather="dollar-sign" class="align-text-bottom"></span>
                 Contabilidad
               </a>
@@ -96,7 +96,7 @@
           </h6>
           <ul class="nav flex-column mb-2">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'reportes' %}">
+              <a class="nav-link" href="">
                 <span data-feather="file-text" class="align-text-bottom"></span>
                 Reportes generales
               </a>
