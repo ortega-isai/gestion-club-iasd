@@ -7,9 +7,25 @@ from dateutil.relativedelta import relativedelta
 class TipoMiembro(models.Model):
     descripcion = models.CharField(max_length=100)
 
+    class Meta:
+        ordering = ['descripcion']
+        verbose_name = 'Tipo de miembro'
+        verbose_name_plural = 'Tipos de miembros'
+
+    def __str__(self):
+        return self.descripcion
+
 
 class ClaseMiembro(models.Model):
     descripcion = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ['descripcion']
+        verbose_name = 'Clase de miembro'
+        verbose_name_plural = 'Clases de miembros'
+
+    def __str__(self):
+        return self.descripcion
 
 
 class Miembro(models.Model):
@@ -31,12 +47,16 @@ class Miembro(models.Model):
     # Datos del club
     tipo_miembro = models.ForeignKey(
         TipoMiembro,
+        blank=True,
+        null=True,
         on_delete=models.PROTECT)
     clase = models.ForeignKey(
         ClaseMiembro,
+        null=True,
+        blank=True,
         on_delete=models.PROTECT)
     miembro_iglesia = models.BooleanField(default=True,
-                                          verbose_name='¿Es miembro de la Iglesia Adventista del Séptimo Día?')
+                                          verbose_name='¿Es miembro de la IASD?')
 
     class Meta:
         ordering = ['nombre', 'clase']
@@ -44,7 +64,7 @@ class Miembro(models.Model):
         verbose_name_plural = 'miembros'
 
     def __str__(self):
-        return f'{self.nombre} {self.apellido_paterno} {self.apellido_materno} - {self.get_tipo_miembro_display()}'
+        return f'{self.nombre} {self.apellido_paterno} {self.apellido_materno} - {self.tipo_miembro}'
 
     # ABSOLUTE URL METHOD
     def get_absolute_url(self):
@@ -56,15 +76,6 @@ class Miembro(models.Model):
 
     @property
     def edad(self):
-        # delta = datetime.now().date() - self.fecha_nacimiento
-        # return delta
-
-        # print(datetime.now().date())
-        # print(self.fecha_nacimiento)
-        # # delta = relativedelta.relativedelta(
-        # #     datetime.now().date(), self.fecha_nacimiento)
-        # return delta.days
-
         return relativedelta(datetime.now().date(), self.fecha_nacimiento).years
 
     @property
@@ -78,6 +89,11 @@ class Familia(models.Model):
         Miembro,
         blank=True,
     )
+
+    class Meta:
+        ordering = ['nombre_familia', 'miembro__nombre']
+        verbose_name = 'Familia'
+        verbose_name_plural = 'Familias'
 
     def __str__(self):
         return f'Familia {self.nombre_familia}'
