@@ -19,6 +19,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('gobernar/', admin.site.urls),
+    path("accounts/", include("allauth.urls")),
+    path('', include('dashboard.urls')),
+    path('club/', include('club.urls')),
 ]
 
 if settings.DEBUG:

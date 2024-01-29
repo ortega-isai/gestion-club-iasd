@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block header %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+</div>
+<p>Este tablero muestra los datos más relevantes e importantes del club</p>
+
+
+<div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom  my-4">
+    <h1 class="h3">Miembros y familias</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+
+        <div class="btn-group me-2" role="group" aria-label="Basic example">
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'miembros' %}"> Ver miembros</a>
+            <a class="btn btn-sm btn-outline-primary" href=""> Cumpleaños</a>
+            {% if perms.club.add_familia %}
+            <a href="" class="btn btn-sm btn-outline-secondary">
+                <i class="text-success" data-feather="user-plus"></i> Nueva familia
+            </a>
+            {% endif %}
+            {% if perms.club.add_miembro %}
+            <a href="{% url 'miembro-new' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="text-success" data-feather="user-plus"></i> Nuevo miembro
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% if perms.club.view_Miembro %}
+<div class="row">
+
+    <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0">
+        <div class="card shadow ">
+            <h5 class="card-header bg-primary text-white">Aventureros</h5>
+            <div class="card-body">
+                <canvas id="AventurerosCount"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col mb-4 mb-lg-0">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for key,value in tipo_miembro_count.items %}
+            <div class="col">
+                <div class="card shadow h-100">
+                    <h5 class="card-header bg-primary text-white">{{value.tipo_miembro}}</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{value.counts}}</h5>
+                        <p class="card-text">Total de {{value.tipo_miembro}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col">
+                <div class="card shadow h-100">
+                    <h5 class="card-header bg-primary text-white">Total de miembros</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{miembro_count}}</h5>
+                        <p class="card-text">Total de todos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col">
+        <p>Sin permisos</p>
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+
+{% block JavaScript %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{ claseAventureros|json_script:"claseAventureros" }}
+
+<script>
+    const value = JSON.parse(document.getElementById('claseAventureros').textContent);
+    const ctx = document.getElementById('AventurerosCount');
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: value.labels,
+            datasets: [{
+                label: 'Total',
+                data: value.data,
+                backgroundColor: value.colors,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    display: true,
+                },
+                title: {
+                    display: false,
+                    text: 'Aventureros por clase'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
