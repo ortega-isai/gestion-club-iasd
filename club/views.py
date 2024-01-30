@@ -49,7 +49,7 @@ class ClubDashboard(PermissionRequiredMixin, TemplateView):
             'clase'].count().reset_index(name='counts').to_dict("index")
         context['general_miembro_count'] = df_general_miembro_count
 
-        print(df_general_miembro_count)
+        # print(df_general_miembro_count)
 
         return context
 
