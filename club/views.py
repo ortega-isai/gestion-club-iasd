@@ -79,7 +79,7 @@ class MiembroCreateView(PermissionRequiredMixin, CreateView):
 
 
 class FamiliaCreateView(PermissionRequiredMixin, CreateView):
-    permission_required = 'club.add_famailia'
+    permission_required = 'club.add_familia'
     model = models.Familia
     form_class = forms.FamiliaAddForm
     template_name = r'generic_form.html'
@@ -89,7 +89,7 @@ class FamiliaCreateView(PermissionRequiredMixin, CreateView):
 
 
 class FamiliaDetailView(PermissionRequiredMixin, DetailView):
-    permission_required = 'club.view_Familia'
+    permission_required = 'club.view_familia'
     model = models.Familia
 
     def get_context_data(self, **kwargs):
