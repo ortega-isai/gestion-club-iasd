@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Reportes</li>
+    </ol>
+</nav>
+<h1 class="h2">Reportes</h1>
+<p>Seccion de reportes e informes</p>
+
+
+<div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom  my-4">
+    <h1 class="h4">Contabilidad</h1>
+</div>
+{% if perms.contabilidad.view_recibo or perms.contabilidad.view_gasto%}
+<dl class="row">
+    <dt class="col-sm-3">Reporte</dt>
+    <dd class="col-sm-9">Descripcion del reporte</dd>
+    <hr class="dropdown-divider">
+    <dt class="col-sm-3">
+        <a href="{% url 'reporte-pagos-conceptos' %}" class="">Reporte general de pagos por concepto</a>
+    </dt>
+    <dd class="col-sm-9">Muestra todos los pagos</dd>
+
+    <dt class="col-sm-3">
+        <a href="{% url 'reporte_mensual_pagos' %}" class="">Reporte de pagos por mes</a>
+    </dt>
+    <dd class="col-sm-9">Muestra los pagos realizados por mes y ordenados por fecha</dd>
+
+    <dt class="col-sm-3">
+        <a href="{% url 'reporte-pagos-cuotas' %}" class="">Reporte de cuotas</a>
+    </dt>
+    <dd class="col-sm-9">Muestra las cuotas pagadas</dd>
+
+    <dt class="col-sm-3">
+        <a href="{% url 'reporte-pagos-camporee' %}" class="">Reporte de camporee</a>
+    </dt>
+    <dd class="col-sm-9">Los pagos realizados para el camporee</dd>
+
+    <dt class="col-sm-3">
+        <a href="{% url 'reporte-recoleccion' %}" class="">Reporte de recolección</a>
+    </dt>
+    <dd class="col-sm-9">Muestra el avance de la recolección</dd>
+</dl>
+{% else %}
+<p>Sin permisos</p>
+{% endif %}
+
+{% endblock %}

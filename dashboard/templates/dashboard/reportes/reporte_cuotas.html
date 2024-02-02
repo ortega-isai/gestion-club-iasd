@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'reportes' %}">Reportes</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Reporte de cuotas pagadas</li>
+    </ol>
+</nav>
+<h1 class="h2">Reporte de cuotas pagadas</h1>
+{{resultado|safe}}
+
+{% endblock %}
