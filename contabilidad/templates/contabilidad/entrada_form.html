@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block header %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+    integrity="sha256-XLNUEfzPGHBeStES2DbLUURZ3e793BablwzJlYj6W2Q=" crossorigin="anonymous">
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container mt-5 mb-3">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4>Nuevo ingreso</h4>
+                </div>
+                <form method="post" autocomplete="off" enctype="multipart/form-data">
+                    <div class="card-body">
+                        {% crispy form %}
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block JavaScript %}
+{% comment "datepiker" %}
+https://flatpickr.js.org/getting-started/#usage
+{% endcomment %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    flatpickr.localize(flatpickr.l10ns.es);
+    $("#datepicker").flatpickr({
+        dateFormat: "d/m/Y",
+        locale: {
+            firstDayOfWeek: 0,
+        }
+    });
+    $(document).ready(function () {
+        $('.select-js').select2({
+            theme: 'bootstrap-5'
+        });
+    });
+</script>
+
+{% endblock %}

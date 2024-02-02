@@ -22,6 +22,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path('', include('dashboard.urls')),
     path('club/', include('club.urls')),
+    path('contabilidad/', include('contabilidad.urls')),
 ]
 
 if settings.DEBUG:

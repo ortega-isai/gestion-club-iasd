@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Contabilidad general (Anual)</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="dropdown  me-2">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Mes
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=1 ">Enero</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=2 ">Febrero</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=3 ">Marzo</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=4 ">Abril</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=5 ">Mayo</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=6 ">Junio</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=7 ">Julio</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=8 ">Agosto</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=9 ">Setptiembre</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=10 ">Octubre</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=11 ">Noviembre</a></li>
+                <li><a class="dropdown-item" href="{% url 'contabilidad-mensual'%}?mes=12 ">Diciembre</a></li>
+            </ul>
+        </div>
+
+        <div class="btn-group  me-2" role="group" aria-label="Basic example">
+
+            {% if perms.contabilidad.view_entrada %}
+            <a href="{% url 'entradas' %}" class="btn btn-sm btn-outline-secondary">
+                <i data-feather="trending-up"></i> Ingresos
+            </a>
+            {% endif %}
+            {% if perms.contabilidad.add_entrada %}
+            <a href="{% url 'entrada-new' %}" class="btn btn-sm btn-outline-secondary ">
+                <i class="text-success" data-feather="plus-circle"></i> Nuevo Ingreso
+            </a>
+            {% endif %}
+            {% if perms.contabilidad.view_salida %}
+            <a href="{% url 'salidas' %}" class="btn btn-sm btn-outline-secondary ">
+                <i data-feather="trending-down"></i> Egresos
+            </a>
+            {% endif %}
+            {% if perms.contabilidad.add_salida %}
+            <a href="{% url 'salida-new' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="text-danger" data-feather="minus-circle"></i> Nuevo Egreso
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Contabilidad</li>
+    </ol>
+</nav>
+
+<div class="row my-4">
+    <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+        <div class="card shadow h-100">
+            <h5 class="card-header bg-info text-white">Total de Ingresos</h5>
+            <div class="card-body">
+                <h5 class="card-title">${{pagos_anual_importe.importe__sum|floatformat:2|intcomma}}</h5>
+                <p class="card-text">Total de ingresos de {{pagos_anual_conteo}}
+                    ingresos
+                </p>
+                <!-- <p class="card-text text-success">18.2% increase since last month</p> -->
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+        <div class="card shadow h-100 ">
+            <h5 class="card-header bg-info text-white">Total de Egresos</h5>
+            <div class="card-body">
+                <h5 class="card-title">${{salidas_anual_importe.importe__sum|floatformat:2|intcomma}}</h5>
+                <p class="card-text">Total de igresos de {{salidas_anual_conteo}}
+                    egresos
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+        <div class="card shadow h-100">
+            <h5 class="card-header bg-info text-white">Saldo del mes</h5>
+            <div class="card-body">
+                {% if saldo > 0 %}
+                <h5 class="card-title text-success ">${{saldo|floatformat:2|intcomma}}</h5>
+                <p class="card-text">Saldo a favor</p>
+                {% elif saldo == 0 %}
+                <h5 class="card-title">${{saldo|floatformat:2|intcomma}}</h5>
+                <p class="card-text">Ni una ni otra</p>
+                {% elif saldo < 0 %} <h5 class="card-title text-danger">${{saldo|floatformat:2|intcomma}}</h5>
+                    <p class="card-text">Saldo en contra</p>
+                    {% else %}
+                    <h5 class="card-title">${{saldo|floatformat:2|intcomma}}</h5>
+                    <p class="card-text">Sin cambios aun</p>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row my-4">
+    <div class="col-12 col-lg-12">
+        <div class="card shadow" style="height: 30rem;">
+            <h5 class="card-header bg-info text-white">Grafica Anual</h5>
+            <div class="card-body">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row my-4">
+    <div class="col">
+        <div class="card shadow-sm ">
+            <h5 class="card-header bg-secondary text-white">
+                Balance Anual <i data-feather="bar-chart-2"></i>
+            </h5>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <caption>Balance Anual</caption>
+                        <thead>
+                            <tr>
+                                <th class="text-center" scope="col">Mes</th>
+                                <th class="text-end" scope="col">Saldo Inicial</th>
+                                <th class="text-end" scope="col">Entradas</th>
+                                <th class="text-end" scope="col">Salidas</th>
+                                <th class="text-end" scope="col">Saldo Final</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            {% for key, value in tabla_anual.items %}
+                            <tr>
+                                <th class="text-center" scope="row">
+                                    <a class="" href="{% url 'contabilidad-mensual'%}?mes={{key}} ">
+                                        {{key}} - {{value.mes_nombre}}
+                                    </a>
+                                </th>
+                                <td class="text-end">${{value.saldo_inicial|floatformat:2|intcomma}}</td>
+                                <td class="text-end">${{value.mes_entrada|floatformat:2|intcomma}}</td>
+                                <td class="text-end">${{value.mes_salida|floatformat:2|intcomma}}</td>
+                                <td class="text-end">${{value.saldo_final|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                        </tbody>
+                        <tfoot class="table-group-divider">
+                            <tr>
+                                <th class="text-end" scope="row"></th>
+                                <td class="text-end">Total</td>
+                                <td class="text-end">${{pagos_anual_importe.importe__sum|floatformat:2|intcomma}}</td>
+                                <td class="text-end">${{salidas_anual_importe.importe__sum|floatformat:2|intcomma}}</td>
+                                <td class="text-end">${{saldo|floatformat:2|intcomma}}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block JavaScript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{ data01|json_script:"data_sets" }}
+
+<script>
+    const ctx = document.getElementById('myChart');
+    const data_sets = JSON.parse(document.getElementById('data_sets').textContent);
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data_sets.labels,
+            datasets: [{
+                label: 'Entradas',
+                data: data_sets.entradas,
+                order: 2
+            },
+            {
+                label: 'Salidas',
+                data: data_sets.salidas,
+                order: 1
+            },
+            {
+                label: 'Saldo Final',
+                data: data_sets.saldo_final,
+                type: 'line',
+                order: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'left',
+                },
+            }, scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+    });
+</script>
+
+{% endblock %}

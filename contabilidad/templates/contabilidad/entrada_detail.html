@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'contabilidad' %}">Contabilidad</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'entradas' %}">Ingreso</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Entrada #{{entrada.id}}</li>
+    </ol>
+</nav>
+<div class="d-flex align-items-center justify-content-md-end mt-3 mt-md-0">
+    {% if perms.contabilidad.add_entrada %}
+    <a href="{% url 'entrada-new' %}" class="btn btn-sm btn-outline-secondary ">
+        <i class="text-success" data-feather="plus-circle"></i> Nuevo Ingreso
+    </a>
+    {% endif %}
+</div>
+<div class="container mt-5 mb-3">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="d-flex flex-row p-4 "> <img src="https://mundoja.org/images/a1-nuevo-web.png" width="72"
+                        height="72s">
+                    <div class="d-flex flex-column"> <span class="font-weight-bold">Entrada de ingreso</span>
+                        <small class="">
+                            Folio:
+                            <small class="font-monospace text-danger">
+                                {{entrada.folio}}
+                            </small>
+                        </small>
+                        <small class="">
+                            Fecha de pago:
+                            <small class="">
+                                {{entrada.fecha_pago}}
+                            </small>
+                        </small>
+                    </div>
+                </div>
+                <hr>
+                <div class="table-responsive p-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="add">
+                                <td>De:</td>
+                                <td>Para:</td>
+                            </tr>
+                            <tr class="content">
+                                <td class="font-weight-bold">
+                                    {{entrada.de}}
+                                    <br>{{entrada.miembro.get_clase_display}}
+                                </td>
+                                <td class="font-weight-bold">Club de aventureros Peniel</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="products p-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="add">
+                                <td class="font-weight-bold">Para:</td>
+                                <td class="font-weight-bold">Concepto:</td>
+                                <td class="font-weight-bold text-center">Total:</td>
+                            </tr>
+                            {% for concepto in entrada.conceptoentrada_set.all %}
+                            <tr class="content">
+                                <td>{{concepto.miembro}}</td>
+                                <td>{{concepto.concepto}}</td>
+                                <td class="text-center">${{concepto.importe|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="content">
+                                <td class=""></td>
+                                <td class=""></td>
+                                <td class="text-center font-weight-bold border-top">
+                                    ${{entrada.total_importe|floatformat:2|intcomma}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                {% if entrada.notas %}
+                <div class="products p-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="add">
+                                <td class="font-weight-bold">Notas:</td>
+                            </tr>
+                            <tr class="content">
+                                <td class="text-left">{{entrada.notas}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                {% endif %}
+                <div class="address p-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="add">
+                                <td>Iglesia Adventista del Séptimo Día - Narvarte</td>
+                            </tr>
+                            <tr class="content">
+                                <td>
+                                    Uxmal 363, Narvarte Poniente, <br>Benito Juárez, <br>03020 Ciudad de México,
+                                    <br>CDMX
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block JavaScript %}
+
+{% endblock %}

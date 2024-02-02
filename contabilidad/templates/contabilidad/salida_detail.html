@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'contabilidad' %}">Contabilidad</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'salidas' %}">Egreso</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Salida {{salida.folio_interno}}</li>
+    </ol>
+</nav>
+<div class="d-flex align-items-center justify-content-md-end mt-3 mt-md-0">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        {% if perms.contabilidad.add_salida %}
+        <a href="{% url 'salida-new' %}" class="btn btn-sm btn-outline-secondary">
+            <i class="text-danger" data-feather="minus-circle"></i> Nuevo Egreso
+        </a>
+        {% endif %}
+    </div>
+</div>
+<div class="container mt-5 mb-3">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="d-flex flex-row p-4 ">
+                    <div class="d-flex flex-column"> <span class="font-weight-bold">Recibo de Egreso</span>
+                        <small class="">
+                            <span class="text-muted">Folio:</span>
+                            <span class="font-monospace text-danger">
+                                {{salida.folio}}
+                            </span>
+                        </small>
+                        <small class="">
+                            <span class="text-muted">Fecha de pago:</span>
+                            <small class="">
+                                {{salida.fecha_pago}}
+                            </small>
+                        </small>
+                        <small class="">
+                            <span class="text-muted">De:</span>
+                            <small class="">
+                                {{salida.de}}
+                            </small>
+                        </small>
+                    </div>
+                </div>
+                <hr>
+                <div class="table-responsive p-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="add">
+                                <td>Proveedor: </td>
+                            </tr>
+                            <tr class="content">
+                                <td class="font-weight-bold">
+                                    {{salida.proveedor}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="products p-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="add">
+                                <td class="font-weight-bold">Conceptos:</td>
+                                <td class="font-weight-bold text-center">Total:</td>
+                            </tr>
+                            {% for concepto in salida.conceptosalida_set.all %}
+                            <tr class="content">
+                                <td>{{concepto.concepto}}</td>
+                                <td class="text-center">${{concepto.importe|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="content">
+                                <td class=""></td>
+                                <td class="text-center font-weight-bold border-top">
+                                    ${{salida.total_importe|floatformat:2|intcomma}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% if salida.notas %}
+                <hr>
+                <div class="products p-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="add">
+                                <td class="font-weight-bold">Notas:</td>
+                            </tr>
+                            <tr class="content">
+                                <td class="text-left">{{salida.notas}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block JavaScript %}
+
+{% endblock %}
