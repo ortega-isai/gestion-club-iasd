@@ -16,7 +16,7 @@ from django.utils.translation import gettext
 
 from . import forms
 from club import models
-# from contabilidad import models
+from contabilidad import models
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -46,4 +46,34 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
 
         mes_nombre = calendar.month_name[mes_actual]
 
+        recibos = models.Entrada.objects.filter(fecha_pago__year=anio_actual
+                                                #    ,fecha_pago__month=mes_actual
+                                                )
+        conceptopago = models.ConceptoEntrada.objects.filter(
+            entrada__in=recibos)
+
+        gastos = models.Salida.objects.filter(fecha_pago__year=anio_actual
+                                              #  ,fecha_pago__month=mes_actual
+                                              )
+        conceptogasto = models.ConceptoSalida.objects.filter(salida__in=gastos)
+
+        context['mes_nombre'] = mes_nombre
+
+        context['entrada_mes_actual_importe'] = conceptopago.aggregate(
+            Sum('importe'))
+        context['salidas_mes_actual_importe'] = conceptogasto.aggregate(
+            Sum('importe'))
+
+        context['entradas_mes_actual_conteo'] = conceptopago.count()
+        context['salidas_mes_actual_conteo'] = conceptogasto.count()
+
+        suma_egreso = conceptogasto.aggregate(Sum('importe'))['importe__sum']
+        suma_ingreso = conceptopago.aggregate(Sum('importe'))['importe__sum']
+
+        if (suma_egreso is None):
+            suma_egreso = 0
+
+        if (suma_ingreso is None):
+            suma_ingreso = 0
+        context['saldo'] = suma_ingreso - suma_egreso
         return context

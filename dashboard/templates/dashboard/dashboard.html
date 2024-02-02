@@ -13,6 +13,96 @@
 </div>
 <p>Este tablero muestra los datos más relevantes e importantes del club</p>
 
+<div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom  my-4">
+    <h1 class="h3">Contabilidad</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group  me-2" role="group" aria-label="Basic example">
+            {% if perms.contabilidad.view_entrada or perms.contabilidad.view_salida%}
+            <a href="{% url 'contabilidad' %}" class="btn btn-sm btn-outline-secondary ">
+                <i data-feather="dollar-sign"></i> Ver contabilidad
+            </a>
+            {% endif %}
+            {% if perms.contabilidad.add_entrada %}
+            <a href="{% url 'entrada-new' %}" class="btn btn-sm btn-outline-secondary ">
+                <i class="text-success" data-feather="plus-circle"></i> Nuevo Ingreso
+            </a>
+            {% endif %}
+            {% if perms.contabilidad.add_salida %}
+            <a href="{% url 'salida-new' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="text-danger" data-feather="minus-circle"></i> Nuevo Egreso
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% if perms.contabilidad.view_entrada or perms.contabilidad.view_salida%}
+
+<div class="row">
+    {% if perms.contabilidad.view_entrada %}
+    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="card shadow h-100">
+            <h5 class="card-header bg-info text-white">Total de Ingresos</h5>
+            <div class="card-body">
+                <h5 class="card-title">${{entrada_mes_actual_importe.importe__sum|floatformat:2|intcomma}}</h5>
+                <p class="card-text">Con un total de {{entradas_mes_actual_conteo}} ingresos
+                </p>
+                <!-- <p class="card-text text-success">18.2% increase since last month</p> -->
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if perms.contabilidad.view_salida %}
+    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="card shadow h-100">
+            <h5 class="card-header bg-info text-white">Total de Egresos</h5>
+            <div class="card-body">
+                <h5 class="card-title">${{salidas_mes_actual_importe.importe__sum|floatformat:2|intcomma}}</h5>
+                <p class="card-text">Con un total de {{salidas_mes_actual_conteo}} egresos
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if perms.contabilidad.view_entrada and perms.contabilidad.view_salida%}
+    <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+        <div class="card shadow h-100">
+            <h5 class="card-header bg-info text-white">Saldo del mes</h5>
+            <div class="card-body">
+                {% if saldo > 0 %}
+                <h5 class="card-title text-success ">${{saldo|floatformat:2|intcomma}}</h5>
+                <p class="card-text">Saldo a favor</p>
+                {% elif saldo == 0 %}
+                <h5 class="card-title">${{saldo|floatformat:2|intcomma}}</h5>
+                <p class="card-text">Ni una ni otra</p>
+                {% elif saldo < 0 %} <h5 class="card-title text-danger">${{saldo|floatformat:2|intcomma}}</h5>
+                    <p class="card-text">Saldo en contra</p>
+                    {% else %}
+                    <h5 class="card-title">${{saldo|floatformat:2|intcomma}}</h5>
+                    <p class="card-text">Sin cambios aun</p>
+                    {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <!-- <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+    <div class="card shadow-sm h-100">
+      <h5 class="card-header bg-info text-white">Pendientes reembolso</h5>
+      <div class="card-body">
+        <h5 class="card-title">64k</h5>
+        <p class="card-text">Feb 1 - Apr 1, United States</p>
+      </div>
+    </div>
+  </div> -->
+</div>
+{% else %}
+<div class="row">
+    <div class="col">
+        <p>Sin permisos</p>
+    </div>
+</div>
+
+{% endif %}
 
 <div
     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom  my-4">
