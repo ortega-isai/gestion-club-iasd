@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.views.generic import ListView, DetailView, TemplateView
 from django.db.models import Count
 from . import models, forms
+from contabilidad.models import Entrada, ConceptoEntrada
 from django_pandas.io import read_frame
 from django.db.models import Avg, Count, Min, Sum
 import pandas as pd
@@ -96,14 +97,14 @@ class FamiliaDetailView(PermissionRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
 
         familia = self.object
-        recibo = Recibo.objects.filter(
-            de__in=familia.miembro.all()
+        recibo = Entrada.objects.filter(
+            de__in=familia.miembro_set.all()
         )
         # recibo = Recibo.objects.filter(
         #     recibos__miembro__in=familia.miembro.all()
         # )
-        conceptopago = ConceptoPago.objects.filter(
-            miembro__in=familia.miembro.all()
+        conceptopago = ConceptoEntrada.objects.filter(
+            miembro__in=familia.miembro_set.all()
         )
 
         context['importe_total'] = conceptopago.aggregate(
