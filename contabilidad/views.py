@@ -97,7 +97,7 @@ class ContabilidadAnualTemplateView(PermissionRequiredMixin, TemplateView):
                         "saldo_final": {}, "meses": []}
         for key, mes in anual.items():
             data_grafica['meses'].append(mes["mes_nombre"])
-            data_grafica['salidas'][mes["mes_nombre"]] = mes['mes_salida'] * -1
+            data_grafica['salidas'][mes["mes_nombre"]] = mes['mes_salida']
             data_grafica['entradas'][mes["mes_nombre"]] = mes['mes_entrada']
             data_grafica['saldo_final'][mes["mes_nombre"]] = mes['saldo_final']
 
