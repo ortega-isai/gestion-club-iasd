@@ -47,11 +47,23 @@
         <div class="p-3 py-5">
             <div class="row mt-2">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 ">
                         <label>Clase a la que pertenece</label>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 fw-bold">
                         <p>{{miembro.clase}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Familia</label>
+                    </div>
+                    <div class="col-md-6 fw-bold">
+                        <p>
+                            <a href="{{miembro.familia.get_absolute_url}}" class="">
+                                {{miembro.familia}}
+                            </a>
+                        </p>
                     </div>
                 </div>
                 <div class="row">
@@ -84,18 +96,6 @@
                     </div>
                     <div class="col-md-6">
                         <p>{{miembro.miembro_iglesia}}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>Familia</label>
-                    </div>
-                    <div class="col-md-6">
-                        <p>
-                            <a href="{{miembro.familia.get_absolute_url}}" class="">
-                                {{miembro.familia}}
-                            </a>
-                        </p>
                     </div>
                 </div>
             </div>
