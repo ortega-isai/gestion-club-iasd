@@ -126,18 +126,9 @@
     </div>
 </div>
 {% if perms.club.view_miembro %}
-<div class="row">
-
-    <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0">
-        <div class="card shadow ">
-            <h5 class="card-header bg-primary text-white">Aventureros</h5>
-            <div class="card-body">
-                <canvas id="AventurerosCount"></canvas>
-            </div>
-        </div>
-    </div>
+<div class="row my-4">
     <div class="col mb-4 mb-lg-0">
-        <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
             {% for key,value in tipo_miembro_count.items %}
             <div class="col">
                 <div class="card shadow h-100">
@@ -161,8 +152,24 @@
         </div>
     </div>
 </div>
+
+<!-- <div class="row my-4">
+    <div class="col mb-4 mb-lg-0">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card shadow h-100">
+                    <h5 class="card-header bg-primary text-white">Aventureros</h5>
+                    <div class="card-body">
+                        <canvas id="AventurerosCount"></canvas>
+                        {{miembros_tipos|safe}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
 {% else %}
-<div class="row">
+<div class="row my-4">
     <div class="col">
         <p>Sin permisos</p>
     </div>

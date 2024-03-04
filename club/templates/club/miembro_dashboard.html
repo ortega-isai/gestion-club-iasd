@@ -60,46 +60,22 @@
         </div>
     </div>
 </div>
-<!-- <div class="row my-4">
-    <div class="col mb-4 mb-lg-0">
-        <div class="row row-cols-1 row-cols-md-5 g-4">
-            {% for key,value in clase_miembro_count.items %}
-            <div class="col">
-                <div class="card text-bg-light shadow h-100">
-                    <h5 class="card-header">{{value.clase}}</h5>
-                    <div class="card-body">
-                        <h5 class="card-title" style="color: {{value.clase__hexcolor}};">{{value.counts}}</h5>
-                        <p class="card-text">Total de {{value.clase}}</p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div> -->
-<!-- <div class="row row-cols-1 row-cols-md-3 row-cols-lg-6 g-4 my-4">
-    {% for key,value in clase_miembro_count.items %}
+
+<div class="row my-4 ">
     <div class="col">
-        <div class="card h-100">
+        <div class="card shadow h-100">
+            <h5 class="card-header">Distribucion</h5>
             <div class="card-body">
-                <h5 class="card-title">{{value.counts}}</h5>
-                <p class="card-text"><small class="text-muted">{{value.clase}}</small></p>
+                {% if general_miembro_count %}
+                <div class="table-responsive">
+                    {{miembros_tipos|safe}}
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
-    {% endfor %}
-</div> -->
+</div>
 <div class="row my-4">
-    <!-- <div class="col-12 col-xl-3 mb-4">
-        <div class="card">
-            <h5 class="card-header bg-primary text-white">Miembros por clase</h5>
-            <div class="card-body">
-                <canvas id="myChart"></canvas>
-            </div>
-        </div>
-    </div> -->
-    <!-- <div class="col-12 col-xl-9 mb-4 mb-lg-0 "> -->
-    <!-- <div class="row"> -->
     <div class="col">
         <div class="card h-100">
             <h5 class="card-header">Familias</h5>
@@ -132,9 +108,9 @@
                                                         {{miembro.apellido_materno}}
                                                     </a> - <small class="text-muted">{{miembro.tipo_miembro}}</small>
                                                 </td>
-                                                <!-- <td class="small">
-                                                            Clase: {{miembro.clase}}
-                                                        </td> -->
+                                                <td class="small">
+                                                    {{miembro.clase}}
+                                                </td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -149,50 +125,7 @@
             </div>
         </div>
     </div>
-    <!-- </div> -->
-    <!-- </div> -->
 </div>
-
-<div class="row my-4 ">
-    <div class="col">
-        <div class="card h-100">
-            <h5 class="card-header">Distribucion</h5>
-            <div class="card-body">
-                {% if general_miembro_count %}
-                <div class="table-responsive">
-                    <table class="table table-hover" id="dataTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">Tipo</th>
-                                <th scope="col">Clase</th>
-                                <th scope="col">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for key,value in general_miembro_count.items %}
-                            <tr>
-                                <td>
-                                    {{value.tipo_miembro}}
-                                </td>
-                                <td>
-                                    {{value.clase}}
-                                </td>
-                                <td>
-                                    {{value.counts}}
-                                </td>
-
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 {% endblock %}
 

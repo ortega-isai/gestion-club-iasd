@@ -76,6 +76,10 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
         if (suma_ingreso is None):
             suma_ingreso = 0
         context['saldo'] = suma_ingreso - suma_egreso
+
+        # Todo: realizar con conteo interno por cada tipo_miembro y por clase
+        # para ser graficado
+
         return context
 
 

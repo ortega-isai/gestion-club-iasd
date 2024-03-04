@@ -47,10 +47,35 @@ class ClubDashboard(PermissionRequiredMixin, TemplateView):
 
         # por tipo - clase de miembro
         df_general_miembro_count = df_miembros.groupby(['tipo_miembro', 'clase', 'clase__hexcolor', ])[
-            'clase'].count().reset_index(name='counts').to_dict("index")
-        context['general_miembro_count'] = df_general_miembro_count
-
+            'clase'].count().reset_index(name='counts')
         # print(df_general_miembro_count)
+
+        context['general_miembro_count'] = df_general_miembro_count.to_dict(
+            "index")
+
+        # print(df_miembros)
+
+        pivote_table = pd.pivot_table(
+            df_miembros,
+            index=['tipo_miembro', 'clase',],
+            columns=[],
+            values=['id'],
+            aggfunc=lambda x: len(x.unique()),
+            fill_value='',
+            margins=True,
+            margins_name='Total',
+        )
+
+        # print(pivote_table)
+
+        context['miembros_tipos'] = pivote_table.to_html(
+            classes=["table", "table-sm", "table-striped",
+                     "table-bordered"],
+            border=0,
+            # table_id='dataTable',
+            # float_format='${:,.2f}'.format,
+            index=True
+        )
 
         return context
 
