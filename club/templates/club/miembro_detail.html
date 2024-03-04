@@ -11,7 +11,7 @@
     <h1 class="h2">Perfil del miembro</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-            {% if perms.club.edit_miembro %}
+            {% if perms.club.add_miembro %}
             <a class="btn btn-sm btn-outline-primary" href="{{miembro.get_absolute_url_update}}">Editar</a>
             {% endif %}
         </div>
